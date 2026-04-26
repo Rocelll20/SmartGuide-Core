@@ -15,16 +15,15 @@ import {
 export default function Dashboard() {
   const [mapSearchQuery, setMapSearchQuery] = useState("");
   
-  // 1. We create an empty state to hold the real markers from the database
   const [markers, setMarkers] = useState<any[]>([]);
 
-  // 2. We tell React to fetch the data from FastAPI (Port 8001) as soon as the page loads
   useEffect(() => {
     const fetchLiveMarkers = async () => {
       try {
-        const response = await fetch("https://smartguide-core.onrender.com/api/live-markers/");
+        // FIXED: Removed the trailing slash at the very end of this URL
+        const response = await fetch("https://smartguide-core.onrender.com/api/live-markers");
         const data = await response.json();
-        setMarkers(data); // Save the database info into our React state
+        setMarkers(data); 
       } catch (error) {
         console.error("Failed to fetch live map data from FastAPI", error);
       }
@@ -33,7 +32,6 @@ export default function Dashboard() {
     fetchLiveMarkers();
   }, []);
 
-  // 3. Filter markers based on the search bar input
   const filteredMarkers = markers.filter(
     (marker) =>
       marker.name.toLowerCase().includes(mapSearchQuery.toLowerCase()) ||
@@ -50,7 +48,6 @@ export default function Dashboard() {
       className="w-full"
       style={{ fontFamily: "'Montserrat', sans-serif" }}
     >
-      {/* Navbar */}
       <header className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 px-4 pt-2">
         <div className="flex items-center gap-4">
           <button className="md:hidden text-white/70 hover:text-white p-2 bg-card rounded-lg" aria-label="Open menu">
@@ -84,9 +81,7 @@ export default function Dashboard() {
       </header>
 
       <div className="flex flex-col gap-6 pb-6 px-4">
-        {/* Row 1: Stat Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* Card 1 */}
           <div className="bg-gradient-to-br from-[#111624] to-[#0A0D18] rounded-[20px] p-6 shadow-2xl border border-white/5 relative overflow-hidden h-[140px] flex flex-col justify-between group cursor-pointer transition-transform hover:-translate-y-1">
             <div className="absolute right-0 top-0 w-32 h-32 bg-[#818cf8]/10 blur-3xl rounded-full transform translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
             <div className="flex justify-between items-start">
@@ -106,7 +101,6 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Card 2 */}
           <div className="bg-[#111624] rounded-[20px] p-6 shadow-2xl border border-white/5 relative overflow-hidden h-[140px] flex flex-col justify-between group cursor-pointer transition-transform hover:-translate-y-1">
             <div className="absolute -left-6 top-1/2 -translate-y-1/2 w-32 h-32 bg-[#fbbf24]/5 blur-3xl rounded-full pointer-events-none"></div>
             <div className="flex items-center gap-4 relative z-10 w-full h-full">
@@ -124,7 +118,6 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Card 3 */}
           <div className="bg-card/40 backdrop-blur-md rounded-[20px] p-6 shadow-2xl border-t border-l border-white/10 border-b-transparent border-r-transparent relative overflow-hidden h-[140px] flex flex-col justify-center items-center text-center group cursor-pointer transition-transform hover:-translate-y-1">
             <div className="absolute inset-0 bg-gradient-to-b from-[#0ea5e9]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
             <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center mb-2 group-hover:-translate-y-1 transition-transform duration-300 border border-white/10 shadow-lg relative">
@@ -135,7 +128,6 @@ export default function Dashboard() {
             <p className="text-[#0ea5e9] text-[11px] font-bold tracking-wider uppercase">Verified Staff/Admin</p>
           </div>
 
-          {/* Card 4 */}
           <div className="bg-gradient-to-r from-[#111624] to-[#151c3a] rounded-[20px] px-5 py-4 shadow-2xl border border-white/5 relative overflow-hidden h-[140px] flex flex-col justify-between cursor-pointer transition-transform hover:-translate-y-1">
             <p className="text-white/50 text-[11px] font-bold tracking-widest uppercase text-center relative z-10">Registered Users</p>
             <div className="flex items-center justify-center flex-1 w-full gap-4 mt-1 relative z-10">
@@ -160,10 +152,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Row 4: Live Map & History */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[600px]">
-          
-          {/* Live Map */}
           <div className="lg:col-span-8 bg-card rounded-2xl p-6 shadow-2xl border border-white/5 flex flex-col">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
               <div>
@@ -173,7 +162,6 @@ export default function Dashboard() {
                 </p>
               </div>
 
-              {/* NEW MAP SEARCH BAR */}
               <div className="relative w-full sm:w-auto flex items-center">
                 <Search className="absolute left-3 w-4 h-4 text-red-500" />
                 <input
@@ -206,7 +194,6 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* History Overview */}
           <div className="lg:col-span-4 bg-card rounded-2xl p-6 shadow-2xl border border-white/5 relative flex flex-col pt-8">
             <h3 className="font-bold text-lg tracking-wide">History Overview</h3>
             <p className="text-white/50 text-sm font-bold mt-2 mb-10 tracking-wide"><span className="text-[#01b574]"></span> this month</p>

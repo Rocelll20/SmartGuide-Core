@@ -29,11 +29,10 @@ export default function SignIn() {
     setLoading(true);
 
     try {
-      // 1. Send credentials to DJANGO (Port 8000)
-      const response = await fetch("https://smartguide-core-3.onrender.com/admin/", {
+      // FIXED: We now hit the /api/login/ endpoint, NOT /admin/
+      const response = await fetch("https://smartguide-core-3.onrender.com/api/login/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        // Django expects 'username', so we map your 'email' input to 'username'
         body: JSON.stringify({
           username: form.email,
           password: form.password
@@ -43,11 +42,9 @@ export default function SignIn() {
       const data = await response.json();
 
       if (response.ok) {
-        // 2. Success! Save the token and go to the dashboard
         localStorage.setItem("smartguide_token", data.token);
         navigate("/dashboard");
       } else {
-        // 3. Handle bad passwords
         setError("Invalid credentials. Please try again.");
       }
     } catch (err) {
