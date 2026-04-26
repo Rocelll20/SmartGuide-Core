@@ -22,7 +22,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchLiveMarkers = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8001/api/live-markers");
+        const response = await fetch("https://YOUR-FASTAPI-APP-NAME.onrender.com/api/live-markers");
         const data = await response.json();
         setMarkers(data); // Save the database info into our React state
       } catch (error) {
