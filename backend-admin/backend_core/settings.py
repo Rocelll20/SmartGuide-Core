@@ -10,6 +10,11 @@ SECRET_KEY = 'django-insecure-#qr4abm3l-$=i37rua*wiew=08xha#gm%lis+ouv19dlp)hh+g
 DEBUG = True
 ALLOWED_HOSTS = ['*']
 
+# FIXED: We explicitly tell Django to trust your Render URL for admin logins
+CSRF_TRUSTED_ORIGINS = [
+    'https://smartguide-core-3.onrender.com',
+]
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -19,14 +24,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'api',
-    # NEW SECURITY APPS WE JUST ADDED:
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
 ]
 
 MIDDLEWARE = [
-    # CORS MUST BE AT THE VERY TOP:
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -76,5 +79,4 @@ USE_I18N = True
 USE_TZ = True
 STATIC_URL = 'static/'
 
-# ALLOW REACT TO COMMUNICATE WITH DJANGO
 CORS_ALLOW_ALL_ORIGINS = True
